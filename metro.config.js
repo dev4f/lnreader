@@ -24,7 +24,7 @@ const map = {
 };
 const customConfig = {
   server: {
-    port: 8081,
+    port: 8088,
     enhanceMiddleware: (metroMiddleware, metroServer) => {
       return (request, res, next) => {
         const filePath = path.join(

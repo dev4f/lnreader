@@ -44,7 +44,7 @@ const { RNDeviceInfo } = NativeModules;
 const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
 
 const assetsUriPrefix = __DEV__
-  ? 'http://localhost:8081/assets'
+  ? 'http://localhost:8088/assets'
   : 'file:///android_asset';
 
 const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {

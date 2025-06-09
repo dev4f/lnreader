@@ -82,7 +82,7 @@ const SettingsReaderScreen = () => {
   const chapterGeneralSettings = useChapterGeneralSettings();
   const READER_HEIGHT = 280;
   const assetsUriPrefix = useMemo(
-    () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
+    () => (__DEV__ ? 'http://localhost:8088/assets' : 'file:///android_asset'),
     [],
   );
   const webViewCSS = `

@@ -10,7 +10,7 @@ export const setStatusBarColor = (color: ThemeColors | ColorInstance) => {
     StatusBar.setBackgroundColor(color.hexa());
   } else {
     StatusBar.setTranslucent(true);
-    StatusBar.setBackgroundColor('transparent');
+    // StatusBar.setBackgroundColor('transparent');
     StatusBar.setBarStyle(color.isDark ? 'light-content' : 'dark-content');
   }
 };
