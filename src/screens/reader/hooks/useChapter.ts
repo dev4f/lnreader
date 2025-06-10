@@ -99,13 +99,22 @@ export default function useChapter(
   const loadChapterText = useCallback(
     async (id: number, path: string) => {
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${id}/index.html`;
+      const dir = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${id}`;
+      if (!NativeFile.exists(dir)) {
+        console.log(`Creating directory for chapter text: ${dir}`);
+        NativeFile.mkdir(dir);
+      }
+      console.log(`Loading chapter text for id: ${id}, path: ${path}, filePath: ${filePath}`);
       let text = '';
       if (NativeFile.exists(filePath)) {
+        console.log(`Reading chapter text from file: ${filePath}`);
         text = NativeFile.readFile(filePath);
       } else {
+        console.log(`Fetching chapter text from plugin: ${novel.pluginId}, path: ${path}`);
         await fetchChapter(novel.pluginId, path)
           .then(res => {
             text = res;
+            NativeFile.writeFile(filePath, res);
           })
           .catch(e => setError(e.message));
       }
