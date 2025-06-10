@@ -2,6 +2,7 @@ import { ReaderTheme } from '@hooks/persisted/useSettings';
 import { MaterialDesignIconName } from '@type/icon';
 
 export const presetReaderThemes: ReaderTheme[] = [
+  { backgroundColor: '#FFFFFF', textColor: '#000000' },
   { backgroundColor: '#f5f5fa', textColor: '#111111' },
   { backgroundColor: '#F7DFC6', textColor: '#593100' },
   { backgroundColor: '#dce5e2', textColor: '#000000' },
@@ -32,6 +33,7 @@ export interface Font {
 export const readerFonts: Font[] = [
   { fontFamily: '', name: 'Original' },
   { fontFamily: 'lora', name: 'Lora' },
+  { fontFamily: 'bookerlam', name: 'Bookerlam' },
   { fontFamily: 'nunito', name: 'Nunito' },
   { fontFamily: 'noto-sans', name: 'Noto Sans' },
   { fontFamily: 'open-sans', name: 'Open Sans' },

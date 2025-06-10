@@ -126,6 +126,7 @@ export default function useChapter(
   const getChapter = useCallback(
     async (navChapter?: ChapterInfo) => {
       try {
+        console.log(`Getting chapter: ${navChapter ? navChapter.id : chapter.id}`);
         const chap = navChapter ?? chapter;
         const cachedText = chapterTextCache.get(chap.id);
         const text = cachedText ?? loadChapterText(chap.id, chap.path);
