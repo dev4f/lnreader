@@ -86,6 +86,28 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       if (amount === 'unread') {
         filtered = filtered.filter(chapter => chapter.unread);
       }
+
+      // Based on readTime, get the last read chapter
+      let latestReadChapterIndex: number = 0;
+      let latestReadTime = new Date(0); // Epoch time
+      for (const chapter of filtered) {
+        if (chapter.readTime) {
+          const readTime = new Date(chapter.readTime);
+          if (readTime > latestReadTime) {
+            latestReadTime = readTime;
+            latestReadChapterIndex = filtered.indexOf(chapter);
+          }
+        }
+      }
+      console.log(
+        `Latest read chapter index: ${latestReadChapterIndex}, total chapters: ${filtered.length}`,
+      );
+
+      if (latestReadChapterIndex > 0) {
+        // If there is a read chapter, slice the array from the next chapter
+        filtered = filtered.slice(latestReadChapterIndex + 1);
+      }
+
       if (isNumber(amount)) {
         filtered = filtered.slice(0, amount);
       }

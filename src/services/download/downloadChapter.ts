@@ -69,6 +69,9 @@ export const downloadChapter = async (
   }));
 
   const chapter = await getChapter(chapterId);
+  console.log(
+    `Starting download for chapter with id: ${JSON.stringify(chapter)}`,
+  );
   if (!chapter) {
     throw new Error('Chapter not found with id: ' + chapterId);
   }
