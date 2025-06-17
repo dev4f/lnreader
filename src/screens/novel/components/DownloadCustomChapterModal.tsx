@@ -24,27 +24,51 @@ const DownloadCustomChapterModal = ({
   chapters,
   downloadChapters,
 }: DownloadCustomChapterModalProps) => {
-  const [text, setText] = useState(0);
+  const [text, setText] = useState("0");
 
   const onDismiss = () => {
     hideModal();
-    setText(0);
+    setText("0");
   };
 
   const onSubmit = () => {
     hideModal();
+    // If the amount is a string, we assume it's a comma-separated list of chapter IDs or a range. Example: "1,2,3", "1-5" or "1,3-5"
+    // Order and de-duplicate the IDs
+    let ids = text
+      .split(',')
+      .flatMap(part => {
+        if (part.includes('-')) {
+          const [start, end] = part.split('-').map(Number);
+          return Array.from(
+            { length: end - start + 1 },
+            (_, i) => start + i,
+          );
+        }
+        return [Number(part)];
+      })
+      .filter(id => !isNaN(id));
+    // Order the IDs
+    ids.sort((a, b) => a - b);
+    // De-duplicate the IDs
+    ids = Array.from(new Set(ids));
+    // Filter chapters by the provided IDs
+    console.log(`Filtered IDs: ${ids}`);
+    console.log(`All chapters: ${chapters.map(ch => ch.id)}`);
+    // Filter chapters based on the index
+    let filtered = chapters.filter((chapter, idx) => ids.includes(idx));
+    console.log(
+      `Downloading chapters: ${filtered.map(chapter => chapter.name).join(', ')}`
+    );
     downloadChapters(
       novel,
-      chapters
-        .filter(chapter => chapter.unread && !chapter.isDownloaded)
-        .slice(0, text),
+      filtered
     );
   };
-
   const onChangeText = (txt: string) => {
-    if (Number(txt) >= 0) {
-      setText(Number(txt));
-    }
+    // allow only numbers, commas, and dashes
+    const sanitizedText = txt.replace(/[^0-9,-]/g, '');
+    setText(sanitizedText)
   };
 
   return (
@@ -54,40 +78,11 @@ const DownloadCustomChapterModal = ({
           {getString('novelScreen.download.customAmount')}
         </Text>
         <View style={styles.row}>
-          <IconButton
-            icon="chevron-double-left"
-            animated
-            size={24}
-            iconColor={theme.primary}
-            onPress={() => text > 9 && setText(prevState => prevState - 10)}
-          />
-          <IconButton
-            icon="chevron-left"
-            animated
-            size={24}
-            iconColor={theme.primary}
-            onPress={() => text > 0 && setText(prevState => prevState - 1)}
-          />
           <TextInput
             value={text.toString()}
             style={[{ color: theme.onSurface }, styles.marginHorizontal]}
-            keyboardType="numeric"
             onChangeText={onChangeText}
             onSubmitEditing={onSubmit}
-          />
-          <IconButton
-            icon="chevron-right"
-            animated
-            size={24}
-            iconColor={theme.primary}
-            onPress={() => setText(prevState => prevState + 1)}
-          />
-          <IconButton
-            icon="chevron-double-right"
-            animated
-            size={24}
-            iconColor={theme.primary}
-            onPress={() => setText(prevState => prevState + 10)}
           />
         </View>
         <Button
